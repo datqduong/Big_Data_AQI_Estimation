@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+catboost_info/
+
+# ipynotebook_checkpoints
+.ipynb_checkpoints/
+
+# test files
+test.py
+test_location.py
+
+Models/*
+"Image_Models/"
+Backup_Models/
+backup/
+results/backup/
+"results/baseline results"
+
+# Compute Canada Scripts
+Compute_Canada_Scripts/
+
+# log files
+output_logs/
+
+Plots/
