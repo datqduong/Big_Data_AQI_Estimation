@@ -6,9 +6,7 @@ Created on Fri Jul  3 20:34:00 2020
 """
 
 import pandas as pd
-import numpy as np
 import os
-import sys
 
 # data_processed_dir = '../../../Data/Data HCM Processed/'
 
