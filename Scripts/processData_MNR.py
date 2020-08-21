@@ -174,7 +174,7 @@ def process_sensor_data(df):
     
     df_copy = df.rename(columns={'time': 'timestamp'})
         
-    df_copy = df_copy.drop(columns=['o3', 'pm10', 'pm25', 'co', 'so2', 'no2', 'heartbeat', 'fah']) # remove unecessary columns
+    df_copy = df_copy.drop(columns=['o3', 'pm10', 'pm25', 'co', 'so2', 'no2', 'heartbeat', 'fah', 'image']) # remove unecessary columns
     
     result_raw, result_processed = get_timestamp_features(df_copy)
     
@@ -301,10 +301,16 @@ def main():
     resample_save_folder_path = os.path.join(save_dir, resample_save_folder_name)
     os.makedirs(resample_save_folder_path, exist_ok=True)
     
+    # Create folder for merged data no image
+    merged_no_image_save_folder_name = "Merged_No_Image_Features"
+    merged_no_image_save_folder_path = os.path.join(save_dir, merged_no_image_save_folder_name)
+    os.makedirs(merged_no_image_save_folder_path, exist_ok=True)
+    
     # Create folder for merged data with image folder for each object detection model used
+    merged_with_image_save_folder_name = "Merged_With_Image_Features"
     model_path_norm = os.path.normpath(model_path)
     object_model_name = model_path_norm.split(os.sep)[-2]
-    merged_save_folder_path = os.path.join(save_dir, object_model_name)
+    merged_save_folder_path = os.path.join(save_dir, merged_with_image_save_folder_name, object_model_name)
     os.makedirs(merged_save_folder_path, exist_ok=True)
     
     # For this data we need to read sensor and emtion tag then merge them together

@@ -19,7 +19,22 @@ import random
 
 
 user_map = {"user1": "dat", "user2": "dong", "user3": "duy-anh"}
-users_collection = [["user1", "user2"], ["user1"], ["user2"], ["user1", "user3"], ["user1", "user2"], ["user1", "user3"], ["user1", "user3"], ["user1", "user2"], ["user1", "user2"], ["user2", "user3"], ["user1", "user2"], ["user2"], ["user1", "user2"], ["user1"], ["user1", "user2"], ["user1"], ["user2", "user3"]]
+# users_collection = [
+#     ["user1", "user2"], ["user1", "user3"], 
+#     ["user2"], ["user1", "user3"],
+#     ["user1", "user2"],["user1", "user3"], 
+#     ["user1", "user3"], ["user1", "user2"], 
+#     ["user1", "user2"], ["user2", "user3"],
+#     ["user1", "user2"], ["user2"], 
+#     ["user1", "user2"], ["user1"],
+#     ["user1", "user2"], ["user1"], 
+#     ["user2", "user3"], ["user3"], 
+#     ["user3"], ["user3"],
+#     ["user3"], ["user3"],
+#     ["user3"], ["user3"],
+#     ["user3"], ["user3"],
+#     ["user3"]
+#     ]
 
 def parse_arguments():
     ap = argparse.ArgumentParser()
@@ -33,13 +48,14 @@ def parse_arguments():
     args = ap.parse_args()
     return args
 
-def pick_user_per_day():
-    user_pick = []
-    random.seed(24)
-    for collection_day in users_collection:
-        user_choice = random.choice(collection_day)
-        user_pick.append(user_choice)
-    return user_pick
+# def pick_user_per_day(data_path):
+#     user_pick = []
+#     random.seed(24)
+#     for collection_day in users_collection:
+#         user_choice = random.choice(collection_day)
+#         user_pick.append(user_choice)
+#     return user_pick
+
 
 def combine_all_available_merged_data(data_path):
     print(f"[*] Reading all available merged data from {os.path.abspath(data_path)}")
@@ -53,23 +69,31 @@ def combine_all_available_merged_data(data_path):
 def combine_merged_data_to_df(data_path):
     df = pd.DataFrame()
     print(f"[*] Reading merged data from {os.path.abspath(data_path)}...")
-    user_pick = pick_user_per_day()
+    # user_pick = pick_user_per_day()
     all_files = []
+    random.seed(24)
     for idx, date_folder in enumerate(os.listdir(data_path)):
         date = datetime.strptime(date_folder, "%Y%m%d")
-        user = user_pick[idx]
-        user_name = user_map[user]
-        file_name = glob.glob(os.path.join(data_path, date_folder, user_name + "*"))
+        # user = user_pick[idx]
+        # user_name = user_map[user]
+        # file_name = glob.glob(os.path.join(data_path, date_folder, user_name + "*"))
+        users_file_list = glob.glob(os.path.join(data_path, date_folder, "*.csv"))
+        file_name = random.choice(users_file_list)
+        user_name = os.path.basename(file_name).split('-emotion-tag-' + date.strftime("%d-%m-%Y"))[0]
         # print(idx, file_name)
         photo_folder_name = "image-tag-" + user_name + "-" + date.strftime("%d-%m-%Y")
         photo_folder_full_path = os.path.relpath(os.path.join(data_path, date_folder, photo_folder_name))
-        all_files.append([file_name[0], photo_folder_full_path])
+        all_files.append([file_name, photo_folder_full_path])
     # all_files = glob.glob(os.path.join(data_path, "**/*.csv"), recursive=True)
     
     # df = pd.concat((pd.read_csv(f) for f in all_files), axis=0, ignore_index = True)
     for f, photo_folder_path in all_files:
         file_df = pd.read_csv(f)
+        image_links_column = file_df['Image Links']
+        image_name_column = image_links_column.apply(lambda row: os.path.basename(row))
         file_df.insert(1, 'image_folder_path', photo_folder_path)
+        file_df.insert(2, 'image name', image_name_column)
+        file_df.drop(columns=["Image Links"], inplace=True)
         df = pd.concat([df, file_df], axis=0, ignore_index=True)
     
     df.columns = df.columns.str.lower()
@@ -110,16 +134,17 @@ def combine_merged_data_to_df(data_path):
 def combine_sensor_data_to_df(data_path):
     print(f"[*] Reading sensor data from {os.path.abspath(data_path)}")
 
-    user_pick = pick_user_per_day()
+    # user_pick = pick_user_per_day()
     # Combine all available data into DataFrame
     
     all_files = []
-    
+    random.seed(24)
     # Get all .csv files in sensor folder recursively
     for idx, date_folder in enumerate(os.listdir(data_path)):
         sensor_folder = os.path.join(data_path, date_folder, "sensor_data")
-        # user_folders = os.listdir(sensor_folder)
-        user_choice = user_pick[idx]
+        # user_choice = user_pick[idx]
+        user_folders = os.listdir(sensor_folder)
+        user_choice = random.choice(user_folders)
         file_of_day = glob.glob(os.path.join(sensor_folder, user_choice, '*.csv'))
         
         all_files.append(file_of_day[0])
@@ -349,16 +374,22 @@ def main():
     resample_save_folder_path = os.path.join(save_dir, resample_save_folder_name)
     os.makedirs(resample_save_folder_path, exist_ok=True)
     
+    # Create folder for merged data no image
+    merged_no_image_save_folder_name = "Merged_No_Image_Features"
+    merged_no_image_save_folder_path = os.path.join(save_dir, merged_no_image_save_folder_name)
+    os.makedirs(merged_no_image_save_folder_path, exist_ok=True)
+    
     # Create folder for merged data with image folder for each object detection model used
+    merged_with_image_save_folder_name = "Merged_With_Image_Features"
     model_path_norm = os.path.normpath(model_path)
     object_model_name = model_path_norm.split(os.sep)[-2]
-    merged_save_folder_path = os.path.join(save_dir, object_model_name)
+    merged_save_folder_path = os.path.join(save_dir, merged_with_image_save_folder_name, object_model_name)
     os.makedirs(merged_save_folder_path, exist_ok=True)
     
     # For this data we already have merged data that's been merged from sensor to emotion_tag
 
     # We only need to process sensor only data, and merged data
-    sensor_path = os.path.join(data_path, "mapping_image_into_sensor")
+    sensor_path = os.path.join(data_path, "mapping_image_into_sensor_update")
     
     # Read sensor data to df
     MNR_AIR_sensor_data = combine_sensor_data_to_df(sensor_path)
@@ -393,7 +424,7 @@ def main():
     
     
     # Read the merged data
-    merged_data_path = os.path.join(data_path, "internal_mapping")
+    merged_data_path = os.path.join(data_path, "merged_data")
     MNR_AIR_merged_data = combine_merged_data_to_df(merged_data_path)
     
     # Process the merged data without image features
@@ -416,28 +447,26 @@ def main():
     print("Done")
     
     
-# =============================================================================
-#     # Process the merged data with image features
-#     print("[*] Processing merged data without image features...")
-#     MNR_AIR_merged_data_raw, MNR_AIR_merged_data_processed, MNR_AIR_merged_data_labels = process_merged_data(MNR_AIR_merged_data, model_path)
-#     print("Done")
-#     
-#     print(f"Merged data with image features size {MNR_AIR_merged_data_raw.shape}")
-#     print(f"Merged data  with image features processed size {MNR_AIR_merged_data_processed.shape}")
-#     print(f"Merged data with image features labels size {MNR_AIR_merged_data_labels.shape}")
-#     
-#     
-#     MNR_AIR_merged_data_raw_file_name = os.path.join(merged_save_folder_path, "MNR_AIR_merged_data_raw.csv")
-#     MNR_AIR_merged_data_processed_file_name = os.path.join(merged_save_folder_path, "MNR_AIR_merged_data_processed.csv")
-#     MNR_AIR_merged_data_labels_file_name = os.path.join(merged_save_folder_path, "MNR_AIR_merged_data_labels.csv")
-#     
-#     # Save to csv files
-#     print("[*] Saving merged data with image features...")
-#     MNR_AIR_merged_data_raw.to_csv(MNR_AIR_merged_data_raw_file_name, index=False, sep=',', header=True)
-#     MNR_AIR_merged_data_processed.to_csv(MNR_AIR_merged_data_processed_file_name, index=False, sep=',', header=True)
-#     MNR_AIR_merged_data_labels.to_csv(MNR_AIR_merged_data_labels_file_name, index=False, sep=',', header=True)
-#     print("Done")
-# =============================================================================
+    # Process the merged data with image features
+    print("[*] Processing merged data without image features...")
+    MNR_AIR_merged_data_raw, MNR_AIR_merged_data_processed, MNR_AIR_merged_data_labels = process_merged_data(MNR_AIR_merged_data, model_path)
+    print("Done")
+    
+    print(f"Merged data with image features size {MNR_AIR_merged_data_raw.shape}")
+    print(f"Merged data  with image features processed size {MNR_AIR_merged_data_processed.shape}")
+    print(f"Merged data with image features labels size {MNR_AIR_merged_data_labels.shape}")
+    
+    
+    MNR_AIR_merged_data_raw_file_name = os.path.join(merged_save_folder_path, "MNR_AIR_merged_data_raw.csv")
+    MNR_AIR_merged_data_processed_file_name = os.path.join(merged_save_folder_path, "MNR_AIR_merged_data_processed.csv")
+    MNR_AIR_merged_data_labels_file_name = os.path.join(merged_save_folder_path, "MNR_AIR_merged_data_labels.csv")
+    
+    # Save to csv files
+    print("[*] Saving merged data with image features...")
+    MNR_AIR_merged_data_raw.to_csv(MNR_AIR_merged_data_raw_file_name, index=False, sep=',', header=True)
+    MNR_AIR_merged_data_processed.to_csv(MNR_AIR_merged_data_processed_file_name, index=False, sep=',', header=True)
+    MNR_AIR_merged_data_labels.to_csv(MNR_AIR_merged_data_labels_file_name, index=False, sep=',', header=True)
+    print("Done")
     
     
 if __name__ == "__main__":
