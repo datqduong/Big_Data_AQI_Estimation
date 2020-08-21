@@ -195,7 +195,7 @@ def main():
                         }
     
     CB_param_space = {                        
-                        'objective': 'MultiRMSE',
+                        'objective': 'RMSE',
                         'n_estimators': randint(1e2, 1e3),
                         'verbose': 0,
                         'learning_rate': uniform(1e-4, 1e-1),
