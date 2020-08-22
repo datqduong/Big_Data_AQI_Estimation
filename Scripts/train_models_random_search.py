@@ -142,11 +142,11 @@ def main():
 
 
     models_map = {
-                     "SVM": SVR,
-                     "Random Forest": RandomForestRegressor,
-                     "Catboost": CatBoostRegressor,
-                     "XGBoost": XGBRegressor,
-                     "LightGBM": LGBMRegressor
+                     "SVM": SVR(),
+                     "Random Forest": RandomForestRegressor(random_state=24),
+                     "Catboost": CatBoostRegressor(random_state=24),
+                     "XGBoost": XGBRegressor(random_state=24),
+                     "LightGBM": LGBMRegressor(random_state=24)
                  }
     
     SVR_param_space = {
@@ -162,8 +162,8 @@ def main():
                         'max_features': ['auto', 'sqrt', 'log2'],
                         'max_depth': randint(5, 20),
                         'min_samples_split': randint(2, 10),
-                        'min_samples_leaf': randint(1, 10),  
-                        'random_state': 24
+                        'min_samples_leaf': randint(1, 10)
+                        # 'random_state': 24
                      }
     
     XGB_param_space = {
@@ -175,8 +175,8 @@ def main():
                          'min_child_weight': randint(1, 10),
                          'reg_lambda ': loguniform(1e-3, 1),
                          'reg_alpha ': loguniform(1e-3, 1),
-                         'learning_rate': uniform(1e-4, 1e-1),
-                         'random_state': 24
+                         'learning_rate': uniform(1e-4, 1e-1)
+                         # 'random_state': 24
                       }
     
     LGBM_param_space = { 
@@ -190,8 +190,8 @@ def main():
                          'min_child_weight': uniform(1e-4, 1e-2),
                          'min_child_samples': randint(10, 30),
                          'reg_lambda ': loguniform(1e-3, 1),
-                         'reg_alpha ': loguniform(1e-3, 1),
-                         'random_state': 24,
+                         'reg_alpha ': loguniform(1e-3, 1)
+                         # 'random_state': 24,
                         }
     
     CB_param_space = {                        
@@ -202,8 +202,8 @@ def main():
                         'depth': randint(4, 12),
                         'l2_leaf_reg': randint(1, 10),
                         'rsm': uniform(1e-2, 1),
-                        'bootstrap_type': ['Bayesian', 'Bernoulli', 'MVS'],
-                        'random_state': 24
+                        'bootstrap_type': ['Bayesian', 'Bernoulli', 'MVS']
+                        # 'random_state': 24
                      }
     
     params_map = {
@@ -235,13 +235,13 @@ def main():
     
     if model_choice != "All":
         print(f"[*] Searching and evaluating model {model_choice}")
-        model = models_map[model_choice]()
+        model = models_map[model_choice]
         search_and_evaluate(model, inputs, model_choice)
         print("Done")
     elif model_choice == "All":
         print("[*] Running all models...")
         for model_name in models_map:
-            model = models_map[model_name]()
+            model = models_map[model_name]
             search_and_evaluate(model, inputs, model_name)
         print("Done!")
     
