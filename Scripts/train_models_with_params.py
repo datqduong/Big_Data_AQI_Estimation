@@ -199,8 +199,8 @@ def main(args):
         test_data_standardized_name = "test_data_tag_sensor_image_pw_standardized.csv"
         test_label_name = "test_label_tag_sensor_image_pw.csv"
         
-    args.model_save_path = os.path.join(args.model_save_path, feature_type)
-    args.results_save_path = os.path.join(args.results_save_path, feature_type)
+    args.model_save_path = os.path.join(args.model_save_path, data_folder_name)
+    args.results_save_path = os.path.join(args.results_save_path, data_folder_name)
     
     os.makedirs(args.model_save_path, exist_ok=True)
     os.makedirs(args.results_save_path, exist_ok=True)
@@ -226,6 +226,7 @@ def main(args):
     else:
         print("Running all models...")
         for model_name in models_map:
+            print(f"[*] Running model {model_name} using pre-defined params")
             params = params_map[model_name]
             model = models_map[model_name](**params)
             fit_and_evaluate(model, inputs, model_name)

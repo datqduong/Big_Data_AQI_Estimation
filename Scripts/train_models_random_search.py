@@ -204,8 +204,8 @@ def main():
                      "LightGBM": LGBM_param_space
                  }
             
-    args.model_save_path = os.path.join(args.model_save_path, feature_type)
-    args.results_save_path = os.path.join(args.results_save_path, feature_type)
+    args.model_save_path = os.path.join(args.model_save_path, data_folder_name)
+    args.results_save_path = os.path.join(args.results_save_path, data_folder_name)
     
     os.makedirs(args.model_save_path, exist_ok=True)
     os.makedirs(args.results_save_path, exist_ok=True)
@@ -231,6 +231,7 @@ def main():
     elif model_choice == "All":
         print("[*] Running all models...")
         for model_name in models_map:
+            print(f"[*] Searching and evaluating model {model_name}")
             model = models_map[model_name]
             search_and_evaluate(model, inputs, model_name)
         print("Done!")
