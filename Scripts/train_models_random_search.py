@@ -151,10 +151,10 @@ def main():
     
     SVR_param_space = {
                         'kernel': ['rbf'],
-                        'C': loguniform(1e-3, 5e2),
+                        'C': loguniform(1e-3, 1e3),
                         'degree': randint(1, 4),
                         'gamma': ['scale', 'auto'],
-                        'epsilon': uniform(1e-1, 5e-1)
+                        'epsilon': loguniform(1e-1, 5e-1)
                        }
     
     RF_param_space = {
@@ -172,14 +172,14 @@ def main():
                          'min_child_weight': randint(1, 10),
                          'reg_lambda ': loguniform(1e-3, 1),
                          'reg_alpha ': loguniform(1e-3, 1),
-                         'learning_rate': uniform(1e-4, 1e-1)                        
+                         'learning_rate': loguniform(1e-4, 1e-1)                        
                       }
     
     LGBM_param_space = { 
                          'boosting_type': ['gbdt'],                        
                          'n_estimators': randint(1e2, 1e3),                        
                          'max_depth': randint(5, 30),
-                         'learning_rate': uniform(1e-4, 1e-1),
+                         'learning_rate': loguniform(1e-4, 1e-1),
                          'num_leaves': randint(2, 256),
                          'min_child_weight': uniform(1e-4, 1e-2),
                          'min_child_samples': randint(10, 30),
@@ -188,14 +188,12 @@ def main():
                         }
     
     CB_param_space = {                                                
-                        'n_estimators': randint(1e2, 1e3),
-                        'verbose': [0],
-                        'learning_rate': uniform(1e-4, 1e-1),
+                        'n_estimators': randint(1e2, 1e3),                        
+                        'learning_rate': loguniform(1e-4, 1e-1),
                         'depth': randint(4, 12),
                         'l2_leaf_reg': randint(1, 10),
-                        'rsm': uniform(1e-2, 1),
-                        'bootstrap_type': ['Bayesian', 'Bernoulli', 'MVS'],
-                        'random_state': [24]
+                        'rsm': uniform(1e-3, 9e-1),
+                        'bootstrap_type': ['Bayesian', 'Bernoulli', 'MVS'],                        
                      }
     
     params_map = {

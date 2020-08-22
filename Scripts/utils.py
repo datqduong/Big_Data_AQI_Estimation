@@ -51,7 +51,7 @@ def grid_search(estimator, param_space):
     return grid_search_model
 
 def random_search(estimator, param_space):
-    random_search_model = RandomizedSearchCV(estimator=estimator, param_distributions = param_space, n_iter=100, random_state=24, n_jobs=-1, verbose=10, cv=5, scoring='r2')
+    random_search_model = RandomizedSearchCV(estimator=estimator, param_distributions = param_space, n_iter=100, random_state=24, n_jobs=-1, verbose=1, cv=5, scoring='r2')
     return random_search_model
     
 def save_best_params(estimator, save_path):
