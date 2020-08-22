@@ -31,11 +31,14 @@ python train_models_random_search.py --data_processed_dir "../Data Processed/MNR
 ```bash
 python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image" --model_choice "SVM" --object_model_name "EfficientDet D7 1536x1536" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
 ```
-### Inputs to train SVM model on MNR dataset using "Tag+Sensor+Image+PW" features
+### Inputs to train SVM model on MNR dataset using "Tag+Sensor+Image+PW" features using object model SSD
 ```bash
-python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image+PW" --model_choice "SVM" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
+python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image+PW" --model_choice "SVM" --object_model_name "SSD ResNet50 V1 FPN 1024x1024 (RetinaNet50)" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
 ```
-
+### Inputs to train SVM model on MNR dataset using "Tag+Sensor+Image+PW" features using object model EfficientDetD7
+```bash
+python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image+PW" --model_choice "SVM" --object_model_name "EfficientDet D7 1536x1536" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
+```
 
 ## Example usage on MNR Air data set
 
