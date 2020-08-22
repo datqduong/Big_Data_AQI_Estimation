@@ -144,9 +144,9 @@ def main():
     models_map = {
                      "SVM": SVR(),
                      "Random Forest": RandomForestRegressor(random_state=24),
-                     "Catboost": CatBoostRegressor(random_state=24),
-                     "XGBoost": XGBRegressor(random_state=24),
-                     "LightGBM": LGBMRegressor(random_state=24)
+                     "Catboost": CatBoostRegressor(objective="RMSE", random_state=24),
+                     "XGBoost": XGBRegressor(objective='reg:squarederror', random_state=24, verbosity=0),
+                     "LightGBM": LGBMRegressor(objective='regression', random_state=24, silent=True)
                  }
     
     SVR_param_space = {
@@ -158,52 +158,44 @@ def main():
                        }
     
     RF_param_space = {
-                        'n_estimators': uniform(1e2, 1e3),    
+                        'n_estimators': randint(1e2, 1e3),    
                         'max_features': ['auto', 'sqrt', 'log2'],
                         'max_depth': randint(5, 20),
                         'min_samples_split': randint(2, 10),
-                        'min_samples_leaf': randint(1, 10)
-                        # 'random_state': 24
+                        'min_samples_leaf': randint(1, 10)                    
                      }
     
-    XGB_param_space = {
-                         'verbosity': 0,    
-                         'n_estimators': randint(1e2, 1e3),
-                         'objective': 'reg:squarederror',
+    XGB_param_space = {                         
+                         'n_estimators': randint(1e2, 1e3),                          
                          'gamma': loguniform(1-3, 1),                         
                          'max_depth': randint(5, 20),
                          'min_child_weight': randint(1, 10),
                          'reg_lambda ': loguniform(1e-3, 1),
                          'reg_alpha ': loguniform(1e-3, 1),
-                         'learning_rate': uniform(1e-4, 1e-1)
-                         # 'random_state': 24
+                         'learning_rate': uniform(1e-4, 1e-1)                        
                       }
     
     LGBM_param_space = { 
-                         'boosting_type': 'gbdt',
-                         'silent': True,
-                         'n_estimators': randint(1e2, 1e3),
-                         'objective': 'regression',
+                         'boosting_type': ['gbdt'],                        
+                         'n_estimators': randint(1e2, 1e3),                        
                          'max_depth': randint(5, 30),
                          'learning_rate': uniform(1e-4, 1e-1),
                          'num_leaves': randint(2, 256),
                          'min_child_weight': uniform(1e-4, 1e-2),
                          'min_child_samples': randint(10, 30),
                          'reg_lambda ': loguniform(1e-3, 1),
-                         'reg_alpha ': loguniform(1e-3, 1)
-                         # 'random_state': 24,
+                         'reg_alpha ': loguniform(1e-3, 1)                          
                         }
     
-    CB_param_space = {                        
-                        'objective': 'RMSE',
+    CB_param_space = {                                                
                         'n_estimators': randint(1e2, 1e3),
-                        'verbose': 0,
+                        'verbose': [0],
                         'learning_rate': uniform(1e-4, 1e-1),
                         'depth': randint(4, 12),
                         'l2_leaf_reg': randint(1, 10),
                         'rsm': uniform(1e-2, 1),
-                        'bootstrap_type': ['Bayesian', 'Bernoulli', 'MVS']
-                        # 'random_state': 24
+                        'bootstrap_type': ['Bayesian', 'Bernoulli', 'MVS'],
+                        'random_state': [24]
                      }
     
     params_map = {
