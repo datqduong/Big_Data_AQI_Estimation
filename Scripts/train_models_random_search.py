@@ -167,7 +167,7 @@ def main():
     
     XGB_param_space = {                         
                          'n_estimators': randint(1e2, 1e3),                          
-                         'gamma': loguniform(1-3, 1),                         
+                         'gamma': loguniform(1e-3, 1),                         
                          'max_depth': randint(5, 20),
                          'min_child_weight': randint(1, 10),
                          'reg_lambda ': loguniform(1e-3, 1),
