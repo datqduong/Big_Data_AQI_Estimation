@@ -150,9 +150,9 @@ def main():
                  }
     
     SVR_param_space = {
-                        'kernel': ['rbf', 'poly', 'linear'],
-                        'C': loguniform(1e-3, 1e3),
-                        'degree': randint(1, 5),
+                        'kernel': ['rbf'],
+                        'C': loguniform(1e-3, 5e2),
+                        'degree': randint(1, 4),
                         'gamma': ['scale', 'auto'],
                         'epsilon': uniform(1e-1, 5e-1)
                        }
