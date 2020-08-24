@@ -35,3 +35,7 @@ python train_models_with_params.py --data_processed_dir "../Data Processed/MNR P
 ```bash
 python train_models_with_params.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image+PW" --model_choice "SVM" --model_save_path "../Saved Models/Test Params/MNR 30S Dataset/" --results_save_path "../Results/Test Params/MNR 30S Dataset"
 ```
+## Example usage on MNR Air data set
+```bash
+python train_models_with_params.py --data_processed_dir "../Data Processed/MNR Air Processed/" --feature_type "Tag+Sensor+Image+PW" --model_choice "All" --object_model_name "EfficientDet D7 1536x1536" --model_save_path "../Saved Models/Test Params/MNR Air 30S Dataset/" --results_save_path "../Results/Test Params/MNR Air 30S Dataset"
+```
