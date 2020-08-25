@@ -7,7 +7,7 @@ Created on Fri Aug  7 20:36:55 2020
 # Import utilities
 import os
 import argparse
-from utils import display_Results
+from utils import display_Results_One_Pol
 from models.read_processed_data_csv import get_train_test_data
 
 # Import regression models
@@ -21,17 +21,21 @@ from lightgbm import LGBMRegressor
 def parse_arguments():
     MODELS_CHOICES = ["SVM", "Random Forest", "Catboost", "XGBoost", "LightGBM", "All"]
     FEATURE_TYPES = ["Sensor", "Sensor+PW", "Tag+Sensor", "Tag+Sensor+PW", "Tag+Sensor+Image", "Tag+Sensor+Image+PW"]
+    PREDS_CHOICES = ["pm25", "pm10", "o3", "co", "so2", "no2", "aqi"]
     
     ap = argparse.ArgumentParser()
     arg = ap.add_argument
-    arg("--data_processed_dir", required=True, type=str, help="Directory of the train and test csv data (including random split folders)")
+    arg("-d", "--data_processed_dir", required=True, type=str, help="Directory of the train and test csv data (including random split folders)")
     
-    arg("--feature_type", required=True, type=str, help="Type of data split", choices= FEATURE_TYPES)
-    arg("--model_choice", required=True, type=str, help="Model name to use, use 'All' to use all available models", choices = MODELS_CHOICES)
-    arg('--object_model_name', type=str, help="Name of the object model used to extact Image features", choices=["SSD ResNet50 V1 FPN 1024x1024 (RetinaNet50)", "EfficientDet D7 1536x1536"])
+    arg("-f", "--feature_type", required=True, type=str, help="Type of data split", choices= FEATURE_TYPES)
+    arg("-mc", "--model_choice", required=True, type=str, help="Model name to use, use 'All' to use all available models", choices = MODELS_CHOICES)
     
-    arg("--model_save_path", required=True, type=str, help="Path to save the model")
-    arg("--results_save_path", required=True, type=str, help="Path to save output result")
+    arg("-p", "--pollutant_to_predict", required=True, type=str, help="Specify name of pollutant to predict", choices = PREDS_CHOICES)
+    
+    arg("-om", '--object_model_name', type=str, help="Name of the object model used to extact Image features", choices=["SSD ResNet50 V1 FPN 1024x1024 (RetinaNet50)", "EfficientDet D7 1536x1536"])
+    
+    arg("-ms", "--model_save_path", required=True, type=str, help="Path to save the model")
+    arg("-rs", "--results_save_path", required=True, type=str, help="Path to save output result")
     args = ap.parse_args()
 
     if "Image" in args.feature_type and args.object_model_name is None:
@@ -49,9 +53,10 @@ def fit_and_evaluate(model, inputs, model_name):
     
     # model_save_path = inputs.model_save_path
     results_save_path = inputs.results_save_path
+    pol_pred_name = inputs.pollutant_to_predict
     
     print("Fitting model {}...".format(model_name))
-    model.fit(X_train_random_split, y_train_random_split.aqi)
+    model.fit(X_train_random_split, y_train_random_split[pol_pred_name])
     print("Done")
     
     print("Evaluating with Test set...")
@@ -63,8 +68,10 @@ def fit_and_evaluate(model, inputs, model_name):
     filePath = os.path.join(save_path, model_name + " Results.txt")
 
     print("Showing evaluation metrics results")
-    display_Results(y_test_random_split, preds, writeFile = True, fPath = filePath, modelName = model_name)
-
+    # display_Results(y_test_random_split, preds, writeFile = True, fPath = filePath, modelName = model_name)
+    y_true_pol = y_test_random_split[pol_pred_name]
+    display_Results_One_Pol(y_true_pol, preds, writeFile = True, fPath = filePath, modelName= model_name)
+    
 def main(args):
     print("Args input entered: {}".format(args))
     
@@ -147,7 +154,7 @@ def main(args):
                      "Catboost": CB_params,
                      "XGBoost": XGB_params,
                      "LightGBM": LGBM_params
-                 }
+                 }       
     
     
     if feature_type == "Sensor":
@@ -198,7 +205,8 @@ def main(args):
         train_label_name = "train_label_tag_sensor_image_pw.csv"
         test_data_standardized_name = "test_data_tag_sensor_image_pw_standardized.csv"
         test_label_name = "test_label_tag_sensor_image_pw.csv"
-        
+
+
     args.model_save_path = os.path.join(args.model_save_path, data_folder_name)
     args.results_save_path = os.path.join(args.results_save_path, data_folder_name)
     

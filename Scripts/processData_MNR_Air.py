@@ -107,6 +107,9 @@ def combine_merged_data_to_df(data_path):
     
     # df.dropna(axis=1, inplace=True)
     df.reset_index(inplace=True, drop=True)
+    
+    df.drop(columns=['uv'], inplace=True) # Remove UV which has lots of errors
+    
     print("Done")
     return df
 
@@ -157,6 +160,9 @@ def combine_sensor_data_to_df(data_path):
     df['time'] = pd.to_datetime(df['time'], dayfirst=True)
     df = df.sort_values('time')
     df.reset_index(inplace=True, drop=True)
+    
+    df.drop(columns=['uv'], inplace=True) # Remove UV which has lots of errors
+    
     print("Done")
     return df
 
@@ -437,9 +443,9 @@ def main():
     print(f"Merged labels without image size {MNR_AIR_merged_data_no_image_labels.shape}")
     
     # Save the processed data to csv file
-    MNR_AIR_merged_data_no_image_raw_file_name = os.path.join(save_dir, "MNR_AIR_merged_data_no_image_raw.csv")
-    MNR_AIR_merged_data_no_image_processed_file_name = os.path.join(save_dir, "MNR_AIR_merged_data_no_image_processed.csv")
-    MNR_AIR_merged_data_no_image_labels_file_name = os.path.join(save_dir, "MNR_AIR_merged_data_no_image_labels.csv")
+    MNR_AIR_merged_data_no_image_raw_file_name = os.path.join(merged_no_image_save_folder_path, "MNR_AIR_merged_data_no_image_raw.csv")
+    MNR_AIR_merged_data_no_image_processed_file_name = os.path.join(merged_no_image_save_folder_path, "MNR_AIR_merged_data_no_image_processed.csv")
+    MNR_AIR_merged_data_no_image_labels_file_name = os.path.join(merged_no_image_save_folder_path, "MNR_AIR_merged_data_no_image_labels.csv")
     print("[*] Saving merged data without image features....")
     MNR_AIR_merged_data_no_image_raw.to_csv(MNR_AIR_merged_data_no_image_raw_file_name, index=False, sep=',', header=True)
     MNR_AIR_merged_data_no_image_processed.to_csv(MNR_AIR_merged_data_no_image_processed_file_name, index=False, sep=',', header=True)

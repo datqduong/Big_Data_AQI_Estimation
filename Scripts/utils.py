@@ -50,8 +50,8 @@ def grid_search(estimator, param_space):
     grid_search_model = GridSearchCV(estimator = estimator, param_grid = param_space, cv=5, scoring = 'r2', verbose=0, n_jobs=-1)
     return grid_search_model
 
-def random_search(estimator, param_space):
-    random_search_model = RandomizedSearchCV(estimator=estimator, param_distributions = param_space, n_iter=100, random_state=24, n_jobs=-1, verbose=1, cv=5, scoring='r2')
+def random_search(estimator, param_space, n_iter):
+    random_search_model = RandomizedSearchCV(estimator=estimator, param_distributions = param_space, n_iter=n_iter, random_state=24, n_jobs=-1, verbose=1, cv=5, scoring='r2')
     return random_search_model
     
 def save_best_params(estimator, save_path):
@@ -144,8 +144,8 @@ def display_Results(y_true, y_pred, plot=False, writeFile = False, **kwargs):
         writer = pd.ExcelWriter(file_name, engine='xlsxwriter')
         # Write each dataframe to a different worksheet.
         # reg_pm25_score_df.to_excel(writer, sheet_name="Pollutants prediction score", float_format = "%0.2f")
-        reg_aqi_score_df.to_excel(writer, sheet_name="AQI values prediction score", float_format = "%0.2f")
-        aqi_rank_score_df.to_excel(writer, sheet_name="AQI rank score", float_format = "%0.2f")
+        reg_aqi_score_df.to_excel(writer, sheet_name="AQI values prediction score", float_format = "%.2f")
+        aqi_rank_score_df.to_excel(writer, sheet_name="AQI rank score", float_format = "%.2f")
         
         writer.save()
         
@@ -172,7 +172,42 @@ def display_Results(y_true, y_pred, plot=False, writeFile = False, **kwargs):
             file.write("\t* F1 score - {:.2f}\n\n".format(f1))
         print("Done!")
 
-
+def display_Results_One_Pol(y_true, y_pred, writeFile = False, **kwargs):
+    print(f"[*] Regression Scores for {y_true.name} prediction...")
+    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+    mae = mean_absolute_error(y_true, y_pred)
+    r2 = r2_score(y_true, y_pred)
+    print("RMSE: {:.2f}".format(rmse))
+    print("MAE: {:.2f}".format(mae))
+    print("R2: {:.2f}".format(r2))
+    
+    
+    if writeFile:
+        model_name = kwargs['modelName']
+        file_name = kwargs['fPath'].split('.txt')[0] + '.xlsx'
+        print("[*] Writing results to excel file...")
+        reg_score_df = pd.DataFrame({"RMSE": rmse, "MAE": mae, "R2": r2}, index=pd.Series(model_name, name = "Model name"))
+        
+        # Create a Pandas Excel Writer using xlsxWriter as the engine
+        writer = pd.ExcelWriter(file_name, engine='xlsxwriter')
+        # Write results to .xlsx file
+        reg_score_df.to_excel(writer, sheet_name = f"{y_true.name} prediction Scores", float_format="%.2f")
+        writer.save()
+        
+        print("Done!")
+        print("[*] Writing results to text file...")
+        filePath = kwargs['fPath']
+        save_folder = os.path.split(filePath)[0]
+        os.makedirs(save_folder, exist_ok=True)
+        with open(filePath, "w") as file:
+            file.write(model_name + "\n")
+            file.write(f"\t{y_true.name} regression score\n")
+            file.write("\t* RMSE - {:.2f}\n".format(rmse))
+            file.write("\t* MAE - {:.2f}\n".format(mae))
+            file.write("\t* R2 - {:.2f}\n".format(r2))
+        
+        print("Done!")
+        
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
                           title='Confusion matrix',

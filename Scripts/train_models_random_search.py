@@ -16,23 +16,27 @@ from xgboost.sklearn import XGBRegressor
 from catboost import CatBoostRegressor
 from lightgbm import LGBMRegressor
 
-from utils import display_Results, save_best_model, random_search, save_best_params
+from utils import display_Results_One_Pol, save_best_model, random_search, save_best_params
 
 def parse_arguments():
 
     MODELS_CHOICES = ["SVM", "Random Forest", "Catboost", "XGBoost", "LightGBM", "All"]
     FEATURE_TYPES = ["Sensor", "Sensor+PW", "Tag+Sensor", "Tag+Sensor+PW", "Tag+Sensor+Image", "Tag+Sensor+Image+PW"]
+    PREDS_CHOICES = ["pm25", "pm10", "o3", "co", "so2", "no2", "aqi"]
     
     ap = argparse.ArgumentParser()
     arg = ap.add_argument
-    arg("--data_processed_dir", required=True, type=str, help="Directory of the train and test csv data (including random split folders)")
+    arg("-d", "--data_processed_dir", required=True, type=str, help="Directory of the train and test csv data (including random split folders)")
     
-    arg("--feature_type", required=True, type=str, help="Type of data split", choices= FEATURE_TYPES)
-    arg("--model_choice", required=True, type=str, help="Model name to use, use 'All' to use all available models", choices = MODELS_CHOICES)
-    arg('--object_model_name', type=str, help="Name of the object model used to extact Image features", choices=["SSD ResNet50 V1 FPN 1024x1024 (RetinaNet50)", "EfficientDet D7 1536x1536"])
+    arg("-f", "--feature_type", required=True, type=str, help="Type of data split", choices= FEATURE_TYPES)
+    arg("-mc", "--model_choice", required=True, type=str, help="Model name to use, use 'All' to use all available models", choices = MODELS_CHOICES)
     
-    arg("--model_save_path", required=True, type=str, help="Path to save the model")
-    arg("--results_save_path", required=True, type=str, help="Path to save output result")
+    arg("-p", "--pollutant_to_predict", required=True, type=str, help="Specify name of pollutant to predict", choices = PREDS_CHOICES)
+    
+    arg("-om", '--object_model_name', type=str, help="Name of the object model used to extact Image features", choices=["SSD ResNet50 V1 FPN 1024x1024 (RetinaNet50)", "EfficientDet D7 1536x1536"])
+    
+    arg("-ms", "--model_save_path", required=True, type=str, help="Path to save the model")
+    arg("-rs", "--results_save_path", required=True, type=str, help="Path to save output result")
     args = ap.parse_args()
 
     if "Image" in args.feature_type and args.object_model_name is None:
@@ -51,11 +55,12 @@ def search_and_evaluate(model, inputs, model_name):
     
     model_save_path = inputs.model_save_path
     results_save_path = inputs.results_save_path
+    pol_pred_name = inputs.pollutant_to_predict
     
     param_space = inputs.params_map[model_name]
-    search = random_search(model, param_space)
+    search = random_search(model, param_space, 200)
     print("[*] Performing randomized search...")
-    search.fit(X_train_random_split, y_train_random_split.aqi)
+    search.fit(X_train_random_split, y_train_random_split[pol_pred_name])
     
     print("Done!")
     
@@ -76,7 +81,8 @@ def search_and_evaluate(model, inputs, model_name):
     #%% Display hold out test set results
     filePath = os.path.join(save_path, model_name + " Results.txt")
     print("[*] Showing result for Random Split")
-    display_Results(y_test_random_split, preds_random_split, writeFile = True, fPath = filePath, modelName = model_name)
+    y_true_pol = y_test_random_split[pol_pred_name]
+    display_Results_One_Pol(y_true_pol, preds_random_split, writeFile = True, fPath = filePath, modelName = model_name)
     
     #%% Save best model
     model_save_name = model_name + " Random Split Best Model.pkl"
@@ -142,11 +148,11 @@ def main():
 
 
     models_map = {
-                     "SVM": SVR(),
-                     "Random Forest": RandomForestRegressor(random_state=24),
-                     "Catboost": CatBoostRegressor(objective="RMSE", random_state=24),
+                     "SVM": SVR(verbose=0),
+                     "Random Forest": RandomForestRegressor(random_state=24, verbose=0),
+                     "Catboost": CatBoostRegressor(objective="RMSE", random_state=24, verbose=0),
                      "XGBoost": XGBRegressor(objective='reg:squarederror', random_state=24, verbosity=0),
-                     "LightGBM": LGBMRegressor(objective='regression', random_state=24, silent=True)
+                     "LightGBM": LGBMRegressor(objective='regression', random_state=24, verbose=0)
                  }
     
     SVR_param_space = {
@@ -223,7 +229,9 @@ def main():
     inputs.y_test_random_split = y_test_random_split
     inputs.params_map = params_map
     
-    if model_choice != "All":
+    print("[*] Doing Regression for {args.pollutant_to_predict} using {feature_type} features")
+    
+    if model_choice != "All":        
         print(f"[*] Searching and evaluating model {model_choice}")
         model = models_map[model_choice]
         search_and_evaluate(model, inputs, model_choice)
