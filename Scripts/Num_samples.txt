@@ -12,7 +12,7 @@ Merged data: 1528 samples
 
 MNR Air data set updated
 Public weather data MNR:  samples
-Sensor data MNR full: 168002 samples
-Sensor data resampled 30S: 8059 samples, 11 features
+Sensor data MNR full: 217402 samples
+Sensor data resampled 30S: 8059 samples, 10 features
 Merged data: 1908 samples, 18 features
 
