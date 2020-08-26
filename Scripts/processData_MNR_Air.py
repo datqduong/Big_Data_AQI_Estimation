@@ -108,7 +108,13 @@ def combine_merged_data_to_df(data_path):
     # df.dropna(axis=1, inplace=True)
     df.reset_index(inplace=True, drop=True)
     
-    df.drop(columns=['uv'], inplace=True) # Remove UV which has lots of errors
+    df.drop(columns=['uv', 'obstruction', 'what the most suitable vehicle for using the route?'], inplace=True) # Remove UV which has lots of errors
+    
+    print("[*] Check null values...")
+    print(df.isnull().sum())
+    
+    print("[*] Removing null values...")
+    df.dropna(axis=0, inplace=True)
     
     print("Done")
     return df
@@ -161,7 +167,13 @@ def combine_sensor_data_to_df(data_path):
     df = df.sort_values('time')
     df.reset_index(inplace=True, drop=True)
     
-    df.drop(columns=['uv'], inplace=True) # Remove UV which has lots of errors
+    df.drop(columns=['uv', 'image'], inplace=True) # Remove UV which has lots of errors
+    
+    print("[*] Check null values...")
+    print(df.isnull().sum())
+    
+    print("[*] Removing null values...")
+    df.dropna(axis=0, inplace=True)
     
     print("Done")
     return df
@@ -251,7 +263,7 @@ def process_sensor_data(df):
     
     df_copy = df.rename(columns={'time': 'timestamp'})
         
-    df_copy = df_copy.drop(columns=['o3', 'pm10', 'pm25', 'co', 'so2', 'no2', 'image']) # remove unecessary columns
+    df_copy = df_copy.drop(columns=['o3', 'pm10', 'pm25', 'co', 'so2', 'no2']) # remove unecessary columns
     
     result_raw, result_processed = get_timestamp_features(df_copy)
     
@@ -293,7 +305,7 @@ def process_merged_data(df, model_path):
                         'do you want to use this route so that you can protect your health and safety (i.e., avoid air pollution, congestion, and obstruction)? safety degree: 1 (not want at all) -> 5': 'safety degree'
                         })
     
-    df_copy.drop(columns=['o3', 'pm10', 'pm25', 'co', 'so2', 'no2', 'obstruction', 'what the most suitable vehicle for using the route?'], inplace=True) # remove unecessary columns
+    df_copy.drop(columns=['o3', 'pm10', 'pm25', 'co', 'so2', 'no2'], inplace=True) # remove unecessary columns
     
     df_copy.insert(4, 'lat', df_copy.location.str.split(",").str[0])
     df_copy.insert(5, 'lon', df_copy.location.str.split(",").str[1])
@@ -350,7 +362,7 @@ def process_merged_data_no_image(df):
                         'do you want to use this route so that you can protect your health and safety (i.e., avoid air pollution, congestion, and obstruction)? safety degree: 1 (not want at all) -> 5': 'safety degree'
                         })
     
-    df_copy.drop(columns=['o3', 'pm10', 'pm25', 'co', 'so2', 'no2', 'obstruction', 'what the most suitable vehicle for using the route?'], inplace=True) # remove unecessary columns
+    df_copy.drop(columns=['o3', 'pm10', 'pm25', 'co', 'so2', 'no2'], inplace=True) # remove unecessary columns
     
     df_copy.insert(4, 'lat', df_copy.location.str.split(",").str[0])
     df_copy.insert(5, 'lon', df_copy.location.str.split(",").str[1])
@@ -407,11 +419,19 @@ def main():
     # Resample sensor data based on a time-window
     MNR_AIR_sensor_data_resampled = resample_data(MNR_AIR_sensor_data, time_window)
     
+    print("[*] Checking nulls...")
+    print(MNR_AIR_sensor_data_resampled.isnull().sum())
     
     # Process the resampled sensor data
     print("[*] Processing resampled sensor data....")
     MNR_AIR_sensor_data_resampled_raw, MNR_AIR_sensor_data_resampled_processed, MNR_AIR_sensor_data_resampled_labels = process_sensor_data(MNR_AIR_sensor_data_resampled)
     
+    print("[*] Checking nulls...")
+    print(MNR_AIR_sensor_data_resampled_raw.isnull().sum())
+    print(MNR_AIR_sensor_data_resampled_processed.isnull().sum())
+    print(MNR_AIR_sensor_data_resampled_labels.isnull().sum())
+    
+
     print(f"Resampled data size {MNR_AIR_sensor_data_resampled_raw.shape}")
     print(f"Resampled data processed size {MNR_AIR_sensor_data_resampled_processed.shape}")
     print(f"Resampled data label size {MNR_AIR_sensor_data_resampled_labels.shape}")
@@ -438,6 +458,11 @@ def main():
     MNR_AIR_merged_data_no_image_raw, MNR_AIR_merged_data_no_image_processed, MNR_AIR_merged_data_no_image_labels = process_merged_data_no_image(MNR_AIR_merged_data)
     print("Done")
     
+    print("[*] Checking nulls...")
+    print(MNR_AIR_merged_data_no_image_raw.isnull().sum())
+    print(MNR_AIR_merged_data_no_image_processed.isnull().sum())
+    print(MNR_AIR_merged_data_no_image_labels.isnull().sum())
+    
     print(f"Merged data without image features size {MNR_AIR_merged_data_no_image_raw.shape}")
     print(f"Merged data without image features processed size {MNR_AIR_merged_data_no_image_processed.shape}")
     print(f"Merged labels without image size {MNR_AIR_merged_data_no_image_labels.shape}")
@@ -454,9 +479,14 @@ def main():
     
     
     # Process the merged data with image features
-    print("[*] Processing merged data without image features...")
+    print("[*] Processing merged data with image features...")
     MNR_AIR_merged_data_raw, MNR_AIR_merged_data_processed, MNR_AIR_merged_data_labels = process_merged_data(MNR_AIR_merged_data, model_path)
     print("Done")
+    
+    print("[*] Checking nulls...")
+    print(MNR_AIR_merged_data_raw.isnull().sum())
+    print(MNR_AIR_merged_data_processed.isnull().sum())
+    print(MNR_AIR_merged_data_labels.isnull().sum())
     
     print(f"Merged data with image features size {MNR_AIR_merged_data_raw.shape}")
     print(f"Merged data  with image features processed size {MNR_AIR_merged_data_processed.shape}")

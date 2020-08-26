@@ -198,6 +198,10 @@ def main():
     # Check if there is still any categorical features
     print("Data types: \n", X.dtypes)
     categorical_features_indices = np.where(X.dtypes != np.float)[0]
+    # Check if there is null values
+    print("Null values:")
+    print(X.isnull().sum())
+    print(y.isnull().sum())
     
     print("Splitting data...random")
     #%% Random split
