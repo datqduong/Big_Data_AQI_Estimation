@@ -217,6 +217,12 @@ def main(args):
     
     X_train_random_split, y_train_random_split, X_test_random_split, y_test_random_split = get_train_test_data(random_split_dir, train_data_standardized_name, train_label_name, test_data_standardized_name, test_label_name)
     
+    print(X_train_random_split.isnull().sum())
+    print(y_train_random_split.isnull().sum())
+    print(X_test_random_split.isnull().sum())
+    print(y_test_random_split.isnull().sum())
+    
+    
     model_choice = args.model_choice
     
     inputs = args
