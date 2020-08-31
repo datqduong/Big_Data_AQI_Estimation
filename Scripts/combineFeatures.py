@@ -78,7 +78,7 @@ def fah_to_cels(temp_fah):
 #     return combined_features_with_weather_data
 # =============================================================================
 
-def combinePublicWeather(data_to_combine, data_save_dir):
+def combinePublicWeather(data_to_combine, data_save_path):
     # Combine global data to the dataframe
     
     print("[*] Combining weather data...")
@@ -112,7 +112,45 @@ def combinePublicWeather(data_to_combine, data_save_dir):
     data_combined = pd.merge_asof(data_to_combine, global_weather_df, on='timestamp')
     
     print("[*] Saving the data combined with weather features...")
-    data_combined.to_csv(os.path.join(data_save_dir, "data+public_weather.csv"), index=False, sep=',', header=True)
+    data_combined.to_csv(data_save_path, index=False, sep=',', header=True)
+    print("Done")
+    return data_combined
+
+def combinePublicWeather_(data_to_combine, data_save_path):
+    # Combine global data to the dataframe
+    
+    print("[*] Combining weather data...")
+    #%% Combine sensor with global weather data
+    global_data_dir = "../../Data/Data MediaEval 2019 GAQD/Weather Data Daily"
+    from_date = data_to_combine.timestamp.iloc[0].date()
+    to_date = data_to_combine.timestamp.iloc[-1].date()
+    
+    global_weather_df = pd.DataFrame()
+    # Loop for every day from "from_date" to "to_date" read the weather data and add the date to the "Time" column since it only has time data
+    for dt in rrule.rrule(rrule.DAILY, dtstart = from_date, until = to_date):
+        day, month, year = dt.day, dt.month, dt.year        
+        # weather_file = os.path.join(global_data_dir, "Weather Data WUnderground 2020-{}-{}.csv".format(month, day))
+        # weather_files.append(weather_file)
+        global_weather = pd.read_csv(os.path.join(global_data_dir, "Weather Data WUnderground {}-{}-{}.csv".format(year, month, day)), index_col = 0)
+        
+        # Add date to "Time" column of the dataframe
+        global_weather['Time'] = dt.date().strftime("%Y-%m-%d") + ' ' + global_weather['Time']
+        # Convert string to datetime type
+        global_weather['Time'] = pd.to_datetime(global_weather['Time'])
+        global_weather.rename(columns={"Time": "timestamp"}, inplace=True)
+        
+        global_weather['Temperature'] = global_weather['Temperature'].apply(fah_to_cels)
+        global_weather['Dew Point'] = global_weather['Dew Point'].apply(fah_to_cels)
+        # Combine all data together
+        global_weather_df = global_weather_df.append(global_weather, ignore_index=True)
+        
+    # Merge the features of global_weather_df to the data based on the closest time reference from sensor data to global weather backwards
+    # E.g: If sensor time is: 7:00 AM, find the closest time before 7:00 AM (which can be 6:50 AM, or less if any closest is available) of weather data and merge the features to it.
+    
+    data_combined = pd.merge_asof(data_to_combine, global_weather_df, on='timestamp')
+    
+    print("[*] Saving the data combined with weather features...")
+    data_combined.to_csv(data_save_path, index=False, sep=',', header=True)
     print("Done")
     return data_combined
     
