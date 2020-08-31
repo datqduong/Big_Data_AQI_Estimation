@@ -16,3 +16,20 @@ Sensor data MNR full: 217402 samples
 Sensor data resampled 30S: 8059 samples, 10 features
 Merged data: 1908 samples, 18 features
 
+
+MediaEval 2019
+Sensor Data Full: 93553 samples, 8 features
+Train: 74842 samples, Test: 18711 samples
+Sensor + PW: 13 features
+
+Sensor Data Threshold PM2.5 < 200: 93367 samples
+Train: 74693 samples, Test: 18674 samples
+
+Sensor Data Drop Duplicates: 23450 samples
+Train: 18722 samples, Test: 4681 samples
+
+Sensor Data Threshold PM2.5 < 200: 23403 samples
+
+Sensor Data Threshold Resampled 30S: 1576 samples
+Sensor Data Threshold Resampled 15S: 2457 samples
+
