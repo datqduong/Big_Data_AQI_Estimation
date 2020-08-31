@@ -47,3 +47,15 @@ def distance_to_airport(location):
     
     distance = haversine_distance(lat_col, lon_col, TSN_airport_lat, TSN_airport_lon)
     return distance
+
+
+def distance_to_airport_(location):
+    # Haneda Airport coordinates
+    Han_airport_lat = 33.5903
+    Han_airport_lon = 130.4467
+        
+    lat_col = location['lat']
+    lon_col = location['lon']
+    
+    distance = haversine_distance(lat_col, lon_col, Han_airport_lat, Han_airport_lon)
+    return distance
