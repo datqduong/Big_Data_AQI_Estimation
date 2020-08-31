@@ -271,3 +271,13 @@ def create_empty_pollutants_columns(preds, pollutants):
         preds_df[col] = 0
     preds_df= preds_df.reindex(columns=['o3_8', 'o3', 'pm10', 'pm25', 'co', 'so2', 'so2_24', 'no2'])
     return preds_df
+
+def create_empty_pollutants_columns_(preds, empty_pols, pollutants):
+    preds_df = pd.DataFrame(data=preds, columns=pollutants)
+    # Add empty values for other pollutants
+    empty_pollutant = empty_pols
+    # empty_pollutant = ['o3_8', 'so2_24']
+    for col in empty_pollutant:
+        preds_df[col] = 0
+    preds_df= preds_df.reindex(columns=['o3_8', 'o3', 'pm10', 'pm25', 'co', 'so2', 'so2_24', 'no2'])
+    return preds_df
