@@ -104,7 +104,7 @@ def main(args):
     RF_params = { 
                     'n_estimators': 1000,
                     'criterion': 'mse',
-                    'max_depth': 20,
+                    'max_depth': None,
                     'min_samples_split': 4,
                     'min_samples_leaf': 1,
                     'min_weight_fraction_leaf':0.0,
@@ -216,6 +216,11 @@ def main(args):
     random_split_dir = os.path.join(data_processed_dir, data_folder_name, 'Random split')
     
     X_train_random_split, y_train_random_split, X_test_random_split, y_test_random_split = get_train_test_data(random_split_dir, train_data_standardized_name, train_label_name, test_data_standardized_name, test_label_name)
+    
+    print(f"X_train size {X_train_random_split.shape}")
+    print(f"y_train size {y_train_random_split.shape}")
+    print(f"X_test size {X_test_random_split.shape}")
+    print(f"y_test size {y_test_random_split.shape}")
     
     print(X_train_random_split.isnull().sum())
     print(y_train_random_split.isnull().sum())
