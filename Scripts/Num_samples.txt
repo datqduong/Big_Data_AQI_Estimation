@@ -31,5 +31,7 @@ Train: 18722 samples, Test: 4681 samples
 Sensor Data Threshold PM2.5 < 200: 23403 samples
 
 Sensor Data Threshold Resampled 30S: 1576 samples
+Train: 1260 samples, Test: 316 samples
+
 Sensor Data Threshold Resampled 15S: 2457 samples
 

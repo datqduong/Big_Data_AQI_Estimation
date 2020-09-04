@@ -199,7 +199,7 @@ def main():
                         'depth': randint(4, 12),
                         'l2_leaf_reg': randint(1, 10),
                         'rsm': uniform(1e-3, 9e-1),
-                        'bootstrap_type': ['Bayesian', 'Bernoulli', 'MVS'],                        
+                        'bootstrap_type': ['Bayesian', 'Bernoulli', 'MVS']                        
                      }
     
     params_map = {
