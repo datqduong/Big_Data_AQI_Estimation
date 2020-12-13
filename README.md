@@ -1,5 +1,5 @@
 # Multi-source Machine Learning for AQI Estimation
-This repository contains the source code for the IEEE Big Data 2020 Conference: 6th Special Session on Intelligent Data Mining paper [Multi-source Machine Learning for AQI Estimation]() by Dat Q. Duong, Quang M. Le, Tan-Loc Nguyen-Tai, Dong Bo, Dat Nguyen, Minh-Son Dao, and Binh T. Nguyen.
+This repository contains the source code of our paper "Multi-source Machine Learning for AQI Estimation" at the conference IEEE Big Data 2020 Conference, the 6th Special Session on Intelligent Data Mining paper.
 
 ## Data sets
 
