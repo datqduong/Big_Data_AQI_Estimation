@@ -10,9 +10,9 @@ This repository contains the source code for the IEEE Big Data 2020 Conference: 
         <td> <b>SEPHLA - MediaEval 2019</b></td>
     </tr>
     <tr>
-      <td valign="top"><img src="Screenshots/mnr-route-min.png" width=500 height=200"></td>
-      <td valign="top"><img src="Screenshots/mnr-2-route-min.png" width=500 height=200"></td>
-      <td valign="top"><img src="Screenshots/sephla-route-min.png" width=500 height=200"></td>
+      <td valign="top"><img src="Screenshots/mnr-route-min.png" width=600 height=300"></td>
+      <td valign="top"><img src="Screenshots/mnr-2-route-min.png" width=600 height=300"></td>
+      <td valign="top"><img src="Screenshots/sephla-route-min.png" width=600 height=300"></td>
     </tr>
 </table>
 
@@ -90,4 +90,18 @@ optional arguments:
 Example script to train SVM model on MNR data set resampled at 30S time window:
 ```bash
 python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Sensor" --model_choice "SVM" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
+```
+
+#### Additional notes
+
+Citation:
+
+```
+@article{DatDuong-multi-source-ML-AQI-estimation_2020,
+	title = {Multi-source Machine Learning for AQI Estimation},
+	author = {Dat Q. Duong and Quang M. Le and Tan-Loc Nguyen-Tai and Dong Bo and Dat Nguyen and Minh-Son Dao and Binh T. Nguyen},
+	month = dec,
+	year = {2020},
+    journal = {Proceedings of the 2020 IEEE International Conference on Big Data},
+}
 ```
