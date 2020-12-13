@@ -43,5 +43,10 @@ python train_models_with_params.py --data_processed_dir "../Data Processed/MNR P
 
 ## Example usage on MNR Air data set
 ```bash
-python train_models_with_params.py --data_processed_dir "../Data Processed/MNR Air Processed/" --feature_type "Tag+Sensor+Image+PW" --model_choice "All" --object_model_name "EfficientDet D7 1536x1536" --model_save_path "../Saved Models/Test Params/MNR Air 30S Dataset/" --results_save_path "../Results/Test Params/MNR Air 30S Dataset"
+python train_models_with_params.py --data_processed_dir "../Data Processed/MNR Air (NoUV) Processed/" --feature_type "Sensor" --model_choice "All" --object_model_name "EfficientDet D7 1536x1536" --model_save_path "../Saved Models/Test Params/MNR Air 30S Dataset/" --results_save_path "../Results/Test Params/MNR Air 30S Dataset"
+```
+
+## Example usage on MediaEval 2019 data set
+```bash
+python train_models_with_params.py --data_processed_dir "../Data Processed/MNR Air (NoUV) Processed/" --feature_type "Sensor" --model_choice "All" --model_save_path "../Saved Models/Test Params/MediaEval2019 Dataset/" --results_save_path "../Results/Test Params/MediaEval2019 Dataset"
 ```
