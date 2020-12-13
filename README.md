@@ -1,6 +1,17 @@
 # Multi-source Machine Learning for AQI Estimation
 This repository contains the source code for the IEEE Big Data 2020 Conference: 6th Special Session on Intelligent Data Mining paper [Multi-source Machine Learning for AQI Estimation]() by Dat Q. Duong, Quang M. Le, Tan-Loc Nguyen-Tai, Dong Bo, Dat Nguyen, Minh-Son Dao, and Binh T. Nguyen.
 
+## Data sets
+
+### MNR-HCM
+![Screenshot](Imgs/mnr-route.png =150x100)
+
+### MNR-Air HCM
+![Screenshot](Imgs/mnr-2-route.png =150x100)
+
+### MediaEval 2019
+![Screenshot](Imgs/sephla-route.png =150x100)
+
 ##  Installation
 To install the dependencies run: `pip install -r requirements.txt`. 
 
