@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 catboost_info/
+.spyproject/
 
 # ipynotebook_checkpoints
 .ipynb_checkpoints/
@@ -22,8 +23,20 @@ Compute_Canada_Scripts/
 # log files
 output_logs/
 
+# Misc
 Plots/
 old_codes/
-
 Results/
 Saved Models/
+back up data processed/
+*.xlsx
+*.pdf
+notebooks/
+analyze_AQI.py
+combine_and_retrieve_images_from_links.py
+evaluate_models.py
+Presentation/
+visualize_route.py
+synthesize_results.py
+visualize_user_route_on_specific_day.py
+web scraping scripts/
