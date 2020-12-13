@@ -1,6 +1,5 @@
-## Usage examples
-Use `python train_models_with_params.py -h` to look at all arguments
-Remember to set --data_processed_dir, --model_save_path, and --results_save_path to different folders for each Data set
+## Train models with pre-defined params usage examples
+Use `python train_models_with_params.py -h` to look at all arguments. Remember to set *--data_processed_dir, --model_save_path, and --results_save_path* to different folders for each Data set
 Set --model_choice to "All" to fit all models on pre-defined params
 
 ## Example usage on MNR data set
@@ -21,7 +20,10 @@ python train_models_with_params.py --data_processed_dir "../Data Processed/MNR P
 ```bash
 python train_models_with_params.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+PW" --model_choice "SVM" --model_save_path "../Saved Models/Test Params/MNR 30S Dataset/" --results_save_path "../Results/Test Params/MNR 30S Dataset"
 ```
-### Remember Scenarios with Image feature need to have one more argument --object_model_name
+
+**Note**
+
+Scenarios with Image feature need to have one more argument --object_model_name
 
 ### Inputs to train SVM model on MNR dataset using "Tag+Sensor+Image" features using object model SSD
 ```bash

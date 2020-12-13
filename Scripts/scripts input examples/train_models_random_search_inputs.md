@@ -1,6 +1,6 @@
 ## Train models using Randomized Search CV usage examples
-Use `python train_models_random_search.py -h` to look at all arguments
-Remember to set --data_processed_dir, --model_save_path, and --results_save_path to different folders for each Data set
+
+Use `python train_models_random_search.py -h` to look at all arguments. Remember to set *--data_processed_dir, --model_save_path, and --results_save_path* to different folders for each Data set
 Set --model_choice to "All" to fit all models on pre-defined params
 
 ## Example usage on MNR data set
@@ -21,7 +21,10 @@ python train_models_random_search.py --data_processed_dir "../Data Processed/MNR
 ```bash
 python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+PW" --model_choice "SVM" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
 ```
-## Remember Scenarios with Image feature need to have one more argument --object_model_name
+
+**Note**
+
+Scenarios with Image feature need to have one more argument *--object_model_name*
 
 ### Inputs to train SVM model on MNR dataset using "Tag+Sensor+Image" features using object model SSD
 ```bash
