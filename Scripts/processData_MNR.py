@@ -19,28 +19,17 @@ def parse_arguments():
     ap = argparse.ArgumentParser()
     arg = ap.add_argument
     
-    arg("--dataset_dir", type=str, required=True, help="Directory of data set")
-    arg("--save_dir", type=str, required=True, help="Directory to save the processed data")
-    arg("--object_model_path", type=str, required=True, help="Directory of the model for object detection")
-    arg("--time_window", type=str, required=True, help="Time window to re-sample sensor data", choices = ["30S", "60S"])
+    arg("-d", "--dataset_dir", type=str, required=True, help="Directory of data set")
+    arg("-s", "--save_dir", type=str, required=True, help="Directory to save the processed data")
+    arg("-om", "--object_model_path", type=str, required=True, help="Directory of the model for object detection")
+    arg("-tw", "--time_window", type=str, required=True, help="Time window to re-sample sensor data", choices = ["30S", "60S"])
     
     args = ap.parse_args()
-    return args
+    
+    assert os.path.exists(os.path.realpath(os.path.expanduser(args.dataset_dir))),\
+        f"The directory '{args.dataset_dir}' doesn't exist!"
 
-# def combine_mapped_data_to_df(data_path):
-#     print(f"[*] Reading mapped data from {os.path.abspath(data_path)}...")
-#     all_files = glob.glob(os.path.join(data_path, "**/*.csv"), recursive=True)
-    
-#     df = pd.concat((pd.read_csv(f) for f in all_files), axis=0, ignore_index = True)
-#     df.columns = df.columns.str.upper()
-    
-#     df['TIME'] = pd.to_datetime(df['TIME'])
-#     print("[*] Sorting values based on Timestamp...")
-#     df = df.sort_values('TIME')
-#     # df.dropna(axis=1, inplace=True)
-#     df.reset_index(inplace=True, drop=True)
-#     print("Done")
-#     return df
+    return args
 
 def combine_emotion_tags_to_df(data_path):
     print(f"[*] Reading emtion tags from {os.path.abspath(data_path)}")
@@ -375,7 +364,7 @@ def main():
     
     
     # Process the merged data with image features
-    print("[*] Processing merged data without image features...")
+    print("[*] Processing merged data with image features...")
     MNR_merged_data_raw, MNR_merged_data_processed, MNR_merged_data_labels = process_merged_data(MNR_merged_data, model_path)
     print("Done")
     

@@ -242,7 +242,7 @@ def main():
             print(f"[*] Searching and evaluating model {model_name}")
             model = models_map[model_name]
             search_and_evaluate(model, inputs, model_name)
-        print("Done!")
+        print("Done")
     
 if __name__ == "__main__":
     

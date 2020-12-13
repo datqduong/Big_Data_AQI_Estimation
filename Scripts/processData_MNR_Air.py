@@ -19,42 +19,22 @@ import random
 
 
 user_map = {"user1": "dat", "user2": "dong", "user3": "duy-anh"}
-# users_collection = [
-#     ["user1", "user2"], ["user1", "user3"], 
-#     ["user2"], ["user1", "user3"],
-#     ["user1", "user2"],["user1", "user3"], 
-#     ["user1", "user3"], ["user1", "user2"], 
-#     ["user1", "user2"], ["user2", "user3"],
-#     ["user1", "user2"], ["user2"], 
-#     ["user1", "user2"], ["user1"],
-#     ["user1", "user2"], ["user1"], 
-#     ["user2", "user3"], ["user3"], 
-#     ["user3"], ["user3"],
-#     ["user3"], ["user3"],
-#     ["user3"], ["user3"],
-#     ["user3"], ["user3"],
-#     ["user3"]
-#     ]
 
 def parse_arguments():
     ap = argparse.ArgumentParser()
     arg = ap.add_argument
     
-    arg("--dataset_dir", type=str, required=True, help="Directory of data set")
-    arg("--save_dir", type=str, required=True, help="Directory to save the processed data")
-    arg("--object_model_path", type=str, required=True, help="Directory of the model for object detection")
-    arg("--time_window", type=str, required=True, help="Time window to re-sample sensor data", choices = ["30S", "60S"])
+    arg("-d", "--dataset_dir", type=str, required=True, help="Directory of data set")
+    arg("-s", "--save_dir", type=str, required=True, help="Directory to save the processed data")
+    arg("-om", "--object_model_path", type=str, required=True, help="Directory of the model for object detection")
+    arg("-tw", "--time_window", type=str, required=True, help="Time window to re-sample sensor data", choices = ["30S", "60S"])
     
     args = ap.parse_args()
-    return args
+    
+    assert os.path.exists(os.path.realpath(os.path.expanduser(args.dataset_dir))),\
+    f"The directory '{args.dataset_dir}' doesn't exist!"
 
-# def pick_user_per_day(data_path):
-#     user_pick = []
-#     random.seed(24)
-#     for collection_day in users_collection:
-#         user_choice = random.choice(collection_day)
-#         user_pick.append(user_choice)
-#     return user_pick
+    return args
 
 
 def combine_all_available_merged_data(data_path):
@@ -69,24 +49,18 @@ def combine_all_available_merged_data(data_path):
 def combine_merged_data_to_df(data_path):
     df = pd.DataFrame()
     print(f"[*] Reading merged data from {os.path.abspath(data_path)}...")
-    # user_pick = pick_user_per_day()
     all_files = []
     random.seed(24)
     for idx, date_folder in enumerate(os.listdir(data_path)):
         date = datetime.strptime(date_folder, "%Y%m%d")
-        # user = user_pick[idx]
-        # user_name = user_map[user]
-        # file_name = glob.glob(os.path.join(data_path, date_folder, user_name + "*"))
+        
         users_file_list = glob.glob(os.path.join(data_path, date_folder, "*.csv"))
         file_name = random.choice(users_file_list)
         user_name = os.path.basename(file_name).split('-emotion-tag-' + date.strftime("%d-%m-%Y"))[0]
-        # print(idx, file_name)
         photo_folder_name = "image-tag-" + user_name + "-" + date.strftime("%d-%m-%Y")
         photo_folder_full_path = os.path.relpath(os.path.join(data_path, date_folder, photo_folder_name))
         all_files.append([file_name, photo_folder_full_path])
-    # all_files = glob.glob(os.path.join(data_path, "**/*.csv"), recursive=True)
     
-    # df = pd.concat((pd.read_csv(f) for f in all_files), axis=0, ignore_index = True)
     for f, photo_folder_path in all_files:
         file_df = pd.read_csv(f)
         image_links_column = file_df['Image Links']
@@ -118,27 +92,6 @@ def combine_merged_data_to_df(data_path):
     
     print("Done")
     return df
-
-# def combine_emotion_tags_to_df(data_path):
-#     print(f"[*] Reading emtion tags from {os.path.abspath(data_path)}")
-#     # Combine all available data into DataFrame
-
-#     # Get all .csv files in sensor folder recursively
-    
-#     # Faster, Python 3.5+ only
-#     all_files = glob.glob(os.path.join(data_path, "**/*.csv"), recursive=True)
-    
-#     df = pd.concat((pd.read_csv(f) for f in all_files), axis=0, ignore_index = True)
-#     df['Date_Time'] = pd.to_datetime(df['Date_Time'], dayfirst=True)
-#     df.rename(columns={"Date_Time": "time"}, inplace=True)
-#     df.drop(columns={"Users", "Image", "Location", "Obstruction", "Congestion", "Traffic_Light", "Pothole", "Construction_Site", "Vehicle for using the route"}, inplace=True)
-    
-#     print("[*] Sorting values based on Timestamp...")
-#     df = df.sort_values('time')
-#     df.dropna(axis=0, inplace=True)
-#     df.reset_index(inplace=True, drop=True)
-#     print("Done")
-#     return df
 
 def combine_sensor_data_to_df(data_path):
     print(f"[*] Reading sensor data from {os.path.abspath(data_path)}")
@@ -177,14 +130,6 @@ def combine_sensor_data_to_df(data_path):
     
     print("Done")
     return df
-
-# def merge_sensor_to_tag(sensor_data, emtion_tag_data, on="time"):
-#     print("[*] Merging sensor data to emtion tags...")
-#     merged_df = pd.merge_asof(emtion_tag_data, sensor_data, on=on)
-#     merged_df.dropna(axis=0, inplace=True)
-#     merged_df.reset_index(inplace=True, drop=True)
-#     print("Done")
-#     return merged_df
         
 def get_timestamp_features(dataframe):
     print("[*] Extracting timestamp and location features...")
@@ -207,8 +152,6 @@ def get_timestamp_features(dataframe):
     dataframe.insert(3, "year", year)
     dataframe.insert(4, "time", time)
     
-    # result_df.insert(0, "timestamp", datetime_column)
-    
     # Add part_of_day and is_rush_hour features
     period = hour.apply(get_part_of_day)
     # Convert to one-hot encoding
@@ -223,11 +166,6 @@ def get_timestamp_features(dataframe):
     
     # Location features, "isNearAirport", "distanceToAirport"
     location = dataframe[['lat', 'lon']]
-    # isNearAirport = location.apply(is_NearAirPort, axis=1)
-    # isNearAP_df = pd.get_dummies(isNearAirport, dtype=np.float64)
-    # result_df = pd.concat([result_df, isNearAP_df], axis=1)
-    # dataframe.insert(3, "is_NearAirPort", isNearAirport)
-    
     distanceToAirport = location.apply(distance_to_airport, axis = 1)
     result_df["distance_to_airport"] = distanceToAirport
     dataframe.insert(7, "distance_to_airport", distanceToAirport)
@@ -491,7 +429,6 @@ def main():
     print(f"Merged data with image features size {MNR_AIR_merged_data_raw.shape}")
     print(f"Merged data  with image features processed size {MNR_AIR_merged_data_processed.shape}")
     print(f"Merged data with image features labels size {MNR_AIR_merged_data_labels.shape}")
-    
     
     MNR_AIR_merged_data_raw_file_name = os.path.join(merged_save_folder_path, "MNR_AIR_merged_data_raw.csv")
     MNR_AIR_merged_data_processed_file_name = os.path.join(merged_save_folder_path, "MNR_AIR_merged_data_processed.csv")

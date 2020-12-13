@@ -243,7 +243,7 @@ def main(args):
         model = models_map[model_choice](**params)        
         fit_and_evaluate(model, inputs, model_choice)      
     else:
-        print("Running all models...")
+        print("[*] Running all models...")
         for model_name in models_map:
             print(f"[*] Running model {model_name} using pre-defined params")
             params = params_map[model_name]
