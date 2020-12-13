@@ -23,7 +23,7 @@ python train_models_with_params.py --data_processed_dir "../Data Processed/MNR P
 
 **Note**
 
-Scenarios with Image feature need to have one more argument --object_model_name
+Scenarios with Image feature need to have one more argument *--object_model_name*
 
 ### Inputs to train SVM model on MNR dataset using "Tag+Sensor+Image" features using object model SSD
 ```bash

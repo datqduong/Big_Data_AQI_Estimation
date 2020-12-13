@@ -9,7 +9,8 @@ pip install -r requirements.txt
 
 ## Feature Engineering
 To extract the feature information described in the paper, use the following scripts,
-`processData_MNR.py`, `processData_MNR_Air.py`, `processData_MediaEval_2019.py`
+`processData_MNR.py`, `processData_MNR_Air.py`, `processData_MediaEval_2019.py`.
+**Note**: *Emotion tags* and *Image features* are not available to process in the MediaEval 2019 data set.
 
 Usage:
 ```
