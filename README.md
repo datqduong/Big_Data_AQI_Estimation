@@ -5,13 +5,15 @@ This repository contains the source code for the IEEE Big Data 2020 Conference: 
 
 <table> 
     <tr> 
-        <td> **MNR-HCM** </td>
-        <td> **MNR-Air HCM** </td>
-        <td> **SEPHLA - MediaEval 2019** </td>
+        <td> <b>MNR-HCM</b> </td>
+        <td> <b>MNR-Air HCM</b> </td>
+        <td> <b>SEPHLA - MediaEval 2019</b></td>
     </tr>
-    <tr><img src="Screenshots/mnr-route.png width=300 height=100"></tr>
-    <tr><img src="Screenshots/mnr-2-route.png width=300 height=100"></tr>
-    <tr><img src="Screenshots/sephla-route.png width=300 height=100"></tr>
+    <tr>
+      <td valign="top"><img src="Screenshots/mnr-route-min.png" width=400 height=300"></td>
+      <td valign="top"><img src="Screenshots/mnr-2-route-min.png" width=400 height=300"></td>
+      <td valign="top"><<img src="Screenshots/sephla-route-min.png" width=400 height=300"></td>
+    </tr>
 </table>
 
 ##  Installation
