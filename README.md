@@ -94,7 +94,7 @@ python train_models_random_search.py --data_processed_dir "../Data Processed/MNR
 
 ## References 
 
-Citation:
+For all usages of our codes and data, please cite the following paper as your reference:
 
 ```
 @article{DatDuong-multi-source-ML-AQI-estimation_2020,
@@ -105,3 +105,5 @@ Citation:
     journal = {Proceedings of the 2020 IEEE International Conference on Big Data},
 }
 ```
+
+All further requests can be sent to the following email: ngtbinh@hcmus.edu.vn
