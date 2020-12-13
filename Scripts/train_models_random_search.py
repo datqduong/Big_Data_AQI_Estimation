@@ -62,7 +62,7 @@ def search_and_evaluate(model, inputs, model_name):
     print("[*] Performing randomized search...")
     search.fit(X_train_random_split, y_train_random_split[pol_pred_name])
     
-    print("Done!")
+    print("[*] Done")
     
     # Save best params
     print("Best params: {}".format(search.best_params_))
@@ -71,12 +71,12 @@ def search_and_evaluate(model, inputs, model_name):
     bestparamPath = os.path.join(save_path, model_name + " Best params.txt")
     print("[*] Saving best params...")
     save_best_params(search, bestparamPath)
-    print("Done!")
+    print("[*] Done")
     
     #%% Evaluate model
     print("[*] Evaluating on hold out test set...")
     preds_random_split = search.predict(X_test_random_split)
-    print("Done!")
+    print("[*] Done")
     
     #%% Display hold out test set results
     filePath = os.path.join(save_path, model_name + " Results.txt")
@@ -235,14 +235,14 @@ def main():
         print(f"[*] Searching and evaluating model {model_choice}")
         model = models_map[model_choice]
         search_and_evaluate(model, inputs, model_choice)
-        print("Done")
+        print("[*] Done")
     elif model_choice == "All":
         print("[*] Running all models...")
         for model_name in models_map:
             print(f"[*] Searching and evaluating model {model_name}")
             model = models_map[model_name]
             search_and_evaluate(model, inputs, model_name)
-        print("Done")
+        print("[*] Finished")
     
 if __name__ == "__main__":
     

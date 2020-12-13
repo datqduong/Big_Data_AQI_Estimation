@@ -55,19 +55,19 @@ def fit_and_evaluate(model, inputs, model_name):
     results_save_path = inputs.results_save_path
     pol_pred_name = inputs.pollutant_to_predict
     
-    print("Fitting model {}...".format(model_name))
+    print("[*] Fitting model {}...".format(model_name))
     model.fit(X_train_random_split, y_train_random_split[pol_pred_name])
     print("Done")
     
-    print("Evaluating with Test set...")
+    print("[*] Evaluating with Test set...")
     preds = model.predict(X_test_random_split)
-    print("Done!")
+    print("[*] Done")
     
     save_path = os.path.join(results_save_path, "Random Split")
     os.makedirs(save_path, exist_ok=True)
     filePath = os.path.join(save_path, model_name + " Results.txt")
 
-    print("Showing evaluation metrics results")
+    print("[*] Showing evaluation metrics results")
     # display_Results(y_test_random_split, preds, writeFile = True, fPath = filePath, modelName = model_name)
     y_true_pol = y_test_random_split[pol_pred_name]
     display_Results_One_Pol(y_true_pol, preds, writeFile = True, fPath = filePath, modelName= model_name)
@@ -249,7 +249,7 @@ def main(args):
             params = params_map[model_name]
             model = models_map[model_name](**params)
             fit_and_evaluate(model, inputs, model_name)
-        print("Finished")
+        print("[*] Finished")
     
 if __name__ == "__main__":
     args = parse_arguments()

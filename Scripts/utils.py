@@ -43,7 +43,7 @@ def resample_data(df, time_window):
             # Get the picked value from df
             value_df = df_remove_dup.take(indx_choice)
             resampled_data = pd.concat([resampled_data, value_df])      
-    print("Done")
+    print("[*] Done")
     return resampled_data
 
 def grid_search(estimator, param_space):
@@ -62,7 +62,7 @@ def save_best_model(search, model_save_name, model_save_path):
     print("[*] Saving best model...")
     filename = os.path.join(model_save_path, model_save_name)
     joblib.dump(search.best_estimator_, filename, compress=3)
-    print("Done!")
+    print("[*] Done")
     
 def display_Results(y_true, y_pred, plot=False, writeFile = False, **kwargs):
     
@@ -127,7 +127,7 @@ def display_Results(y_true, y_pred, plot=False, writeFile = False, **kwargs):
     print(conf_matrix)
     
     if plot:
-        print("Plotting...")
+        print("[*] Plotting...")
         plt.figure()
         plot_confusion_matrix(conf_matrix, classes=range_)
         plt.show()
@@ -149,7 +149,7 @@ def display_Results(y_true, y_pred, plot=False, writeFile = False, **kwargs):
         
         writer.save()
         
-        print("Done!")
+        print("[*] Done")
         print("Writing results to text file...")
         filePath = kwargs['fPath']
         save_folder = os.path.split(filePath)[0]
@@ -170,7 +170,7 @@ def display_Results(y_true, y_pred, plot=False, writeFile = False, **kwargs):
             file.write("\tAQI rank score\n")
             file.write("\t* Accuracy - {:.2f}\n".format(accuracy))
             file.write("\t* F1 score - {:.2f}\n\n".format(f1))
-        print("Done!")
+        print("[*] Done")
 
 def display_Results_One_Pol(y_true, y_pred, writeFile = False, **kwargs):
     print(f"[*] Regression Scores for {y_true.name} prediction...")
@@ -194,7 +194,7 @@ def display_Results_One_Pol(y_true, y_pred, writeFile = False, **kwargs):
         reg_score_df.to_excel(writer, sheet_name = f"{y_true.name} prediction Scores", float_format="%.2f")
         writer.save()
         
-        print("Done!")
+        print("[*] Done")
         print("[*] Writing results to text file...")
         filePath = kwargs['fPath']
         save_folder = os.path.split(filePath)[0]
@@ -206,7 +206,7 @@ def display_Results_One_Pol(y_true, y_pred, writeFile = False, **kwargs):
             file.write("\t* MAE - {:.2f}\n".format(mae))
             file.write("\t* R2 - {:.2f}\n".format(r2))
         
-        print("Done!")
+        print("[*] Done")
         
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
