@@ -24,11 +24,10 @@ Compute_Canada_Scripts/
 output_logs/
 
 # Misc
+backup/
 Plots/
-old_codes/
 Results/
 Saved Models/
-back up data processed/
 *.xlsx
 *.pdf
 notebooks/
