@@ -10,9 +10,9 @@ This repository contains the source code for the IEEE Big Data 2020 Conference: 
         <td> <b>SEPHLA - MediaEval 2019</b></td>
     </tr>
     <tr>
-      <td valign="top"><img src="Screenshots/mnr-route-min.png" width=400 height=300"></td>
-      <td valign="top"><img src="Screenshots/mnr-2-route-min.png" width=400 height=300"></td>
-      <td valign="top"><<img src="Screenshots/sephla-route-min.png" width=400 height=300"></td>
+      <td valign="top"><img src="Screenshots/mnr-route-min.png" width=500 height=200"></td>
+      <td valign="top"><img src="Screenshots/mnr-2-route-min.png" width=500 height=200"></td>
+      <td valign="top"><img src="Screenshots/sephla-route-min.png" width=500 height=200"></td>
     </tr>
 </table>
 
