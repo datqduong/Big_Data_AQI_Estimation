@@ -70,7 +70,7 @@ Example script to train SVM model on MNR data set resampled at 30S time window:
 python train_models_with_params.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Sensor" --model_choice "SVM" --model_save_path "../Saved Models/Test Params/MNR 30S Dataset/" --results_save_path "../Results/Test Params/MNR 30S Dataset"
 ```
 
-Use the command `python train_models_random_search.py` to train the ML models using a pre-defined set of hyper-parameters. Detail usage and examples can be found [here](https://github.com/dat181197/Big_Data_AQI_Estimation/blob/master/Scripts/scripts%20input%20examples/train_models_with_params_inputs.md)
+Use the command `python train_models_random_search.py` to train the ML models using a randomized search method with 5-fold cross validation. Detail usage and examples can be found [here](https://github.com/dat181197/Big_Data_AQI_Estimation/blob/master/Scripts/scripts%20input%20examples/train_models_random_search_inputs.md)
 
 ```bash
 python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Sensor" --model_choice "SVM" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"

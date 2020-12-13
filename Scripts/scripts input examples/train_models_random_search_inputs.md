@@ -1,7 +1,7 @@
 ## Train models using Randomized Search CV usage examples
 
 Use `python train_models_random_search.py -h` to look at all arguments. Remember to set *--data_processed_dir, --model_save_path, and --results_save_path* to different folders for each Data set
-Set --model_choice to "All" to fit all models on pre-defined params
+Set --model_choice to "All" to fit all models using Randomized Search.
 
 ## Example usage on MNR data set
 
@@ -45,7 +45,13 @@ python train_models_random_search.py --data_processed_dir "../Data Processed/MNR
 
 ## Example usage on MNR Air data set
 
-### Inputs to train **All** model on MNR dataset using Sensor features
+### Inputs to train **All** model on MNR Air dataset using Sensor features
 ```bash
 python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Air Processed/" --feature_type "Sensor" --model_choice "All" --model_save_path "../Saved Models/MNR Air 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR Air 30S Dataset/Randomized Search/"
+```
+
+## Example usage on MediaEval 2019 data set
+### Inputs to train **All** model on MNR dataset using Sensor features
+```bash
+python train_models_random_search.py --data_processed_dir "../Data Processed/MediaEval2019 Processed/" --feature_type "Sensor" --model_choice "All" --model_save_path "../Saved Models/MediaEval2019 Dataset/Randomized Search/" --results_save_path "../Results/MediaEval2019 Dataset/Randomized Search/"
 ```
