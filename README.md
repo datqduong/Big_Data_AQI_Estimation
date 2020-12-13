@@ -92,7 +92,7 @@ Example script to train SVM model on MNR data set resampled at 30S time window:
 python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Sensor" --model_choice "SVM" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
 ```
 
-#### Additional notes
+## References 
 
 Citation:
 
