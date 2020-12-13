@@ -28,33 +28,33 @@ Scenarios with Image feature need to have one more argument *--object_model_name
 
 ### Inputs to train SVM model on MNR dataset using "Tag+Sensor+Image" features using object model SSD
 ```bash
-python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image" --model_choice "SVM" --object_model_name "SSD ResNet50 V1 FPN 1024x1024 (RetinaNet50)" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
+python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image" --model_choice "SVM" --pollutant_to_predict "aqi" --object_model_name "SSD ResNet50 V1 FPN 1024x1024 (RetinaNet50)" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
 ```
 
 ### Inputs to train SVM model on MNR dataset using "Tag+Sensor+Image" features using object model EfficientDetD7
 ```bash
-python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image" --model_choice "SVM" --object_model_name "EfficientDet D7 1536x1536" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
+python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image" --model_choice "SVM" --pollutant_to_predict "aqi" --object_model_name "EfficientDet D7 1536x1536" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
 ```
 
 ### Inputs to train SVM model on MNR dataset using "Tag+Sensor+Image+PW" features using object model SSD
 ```bash
-python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image+PW" --model_choice "SVM" --object_model_name "SSD ResNet50 V1 FPN 1024x1024 (RetinaNet50)" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
+python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image+PW" --model_choice "SVM" --pollutant_to_predict "aqi" --object_model_name "SSD ResNet50 V1 FPN 1024x1024 (RetinaNet50)" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
 ```
 
 ### Inputs to train SVM model on MNR dataset using "Tag+Sensor+Image+PW" features using object model EfficientDetD7
 ```bash
-python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image+PW" --model_choice "SVM" --object_model_name "EfficientDet D7 1536x1536" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
+python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Processed/" --feature_type "Tag+Sensor+Image+PW" --model_choice "SVM" --pollutant_to_predict "aqi" --object_model_name "EfficientDet D7 1536x1536" --model_save_path "../Saved Models/MNR 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR 30S Dataset/Randomized Search/"
 ```
 
 ## Example usage on MNR Air data set
 
 ### Inputs to train **All** model on MNR Air dataset using Sensor features
 ```bash
-python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Air (NoUV) Processed/" --feature_type "Sensor" --model_choice "All" --model_save_path "../Saved Models/MNR Air 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR Air 30S Dataset/Randomized Search/"
+python train_models_random_search.py --data_processed_dir "../Data Processed/MNR Air (NoUV) Processed/" --feature_type "Sensor" --model_choice "All" --pollutant_to_predict "aqi" --model_save_path "../Saved Models/MNR Air 30S Dataset/Randomized Search/" --results_save_path "../Results/MNR Air 30S Dataset/Randomized Search/"
 ```
 
 ## Example usage on MediaEval 2019 data set
 ### Inputs to train **All** model on MNR dataset using Sensor features
 ```bash
-python train_models_random_search.py --data_processed_dir "../Data Processed/MediaEval2019 Processed/" --feature_type "Sensor" --model_choice "All" --model_save_path "../Saved Models/MediaEval2019 Dataset/Randomized Search/" --results_save_path "../Results/MediaEval2019 Dataset/Randomized Search/"
+python train_models_random_search.py --data_processed_dir "../Data Processed/MediaEval2019 Processed/" --feature_type "Sensor" --model_choice "All" --pollutant_to_predict "aqi" --model_save_path "../Saved Models/MediaEval2019 Dataset/Randomized Search/" --results_save_path "../Results/MediaEval2019 Dataset/Randomized Search/"
 ```
