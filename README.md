@@ -3,14 +3,16 @@ This repository contains the source code for the IEEE Big Data 2020 Conference: 
 
 ## Data sets
 
-### MNR-HCM
-![Screenshot](Imgs/mnr-route.png =150x100)
-
-### MNR-Air HCM
-![Screenshot](Imgs/mnr-2-route.png =150x100)
-
-### MediaEval 2019
-![Screenshot](Imgs/sephla-route.png =150x100)
+<table> 
+    <tr> 
+        <td> **MNR-HCM** </td>
+        <td> **MNR-Air HCM** </td>
+        <td> **SEPHLA - MediaEval 2019** </td>
+    </tr>
+    <tr><img src="Screenshots/mnr-route.png width=300 height=100"></tr>
+    <tr><img src="Screenshots/mnr-2-route.png width=300 height=100"></tr>
+    <tr><img src="Screenshots/sephla-route.png width=300 height=100"></tr>
+</table>
 
 ##  Installation
 To install the dependencies run: `pip install -r requirements.txt`. 
